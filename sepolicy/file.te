@@ -11,3 +11,6 @@ type pds_file, file_type;
 
 # Sensors
 type sysfs_devices_sensors, sysfs_type;
+
+#Tap2Wake
+type tap2wake_dev, fs_type, sysfs_type;

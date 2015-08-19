@@ -50,3 +50,6 @@
 /sys/devices/f9925000.i2c/i2c-3/3-0048/temp1_input          u:object_r:sysfs_thermal:s0
 /sys/devices/f9925000.i2c/i2c-3/3-0048/temp1_max            u:object_r:sysfs_thermal:s0
 /sys/devices/f9925000.i2c/i2c-3/3-0048/temp1_max_hyst       u:object_r:sysfs_thermal:s0
+
+# TapToWake
+/sys/devices/f9927000.i2c/i2c-5/5-0020/wake_gesture_enabled               u:object_r:tap2wake_dev:s0
