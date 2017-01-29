@@ -38,12 +38,13 @@ on early-init
     # Create modem FSG mount point
     mkdir /fsg 755 root root
 
-    chown system system /sys/kernel/debug
-    chmod 0775 /sys/kernel/debug
+    mount debugfs /sys/kernel/debug /sys/kernel/debug mode=755
 
     symlink /data/tombstones /tombstones
 
 on init
+    export LD_SHIM_LIBS /system/bin/thermal-engine|libshims_thermal.so
+
     # Set permissions for persist partition
     mkdir /persist 0771 system system
 
@@ -109,9 +110,6 @@ on post-fs-data
     # Wifi
     restorecon /data/hostapd
     restorecon /data/misc/wifi/hostapd/wlan0
-
-    # Hardware revisions
-    mkdir /data/hardware_revisions 0755 system system
 
     #Create directories for gpsone_daemon services
     mkdir /data/misc/gpsone_d 0770 system gps
@@ -200,9 +198,6 @@ on early-boot
     write /sys/module/subsystem_restart/parameters/enable_debug ${persist.sys.ssr.enable_debug}
 
 on boot
-    # mount debugfs for systrace
-    mount debugfs /sys/kernel/debug /sys/kernel/debug
-
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
@@ -366,8 +361,6 @@ on boot
     chmod 0660 /sys/devices/virtual/timed_output/vibrator/vtg_level
 
     # Display
-    chown system system /sys/devices/virtual/graphics/fb0/hbm
-    chmod 0660 /sys/devices/virtual/graphics/fb0/hbm
     chown system graphics /sys/devices/virtual/graphics/fb0/idle_time
     chmod 0664 /sys/devices/virtual/graphics/fb0/idle_time
 
@@ -466,12 +459,6 @@ service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
     user bluetooth
     group bluetooth net_bt_admin
     disabled
-    oneshot
-
-service hw_revs /system/bin/hardware_revisions.sh
-    class main
-    user system
-    group system
     oneshot
 
 service irsc_util /system/bin/irsc_util "/etc/sec_config"
